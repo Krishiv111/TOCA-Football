@@ -1,0 +1,142 @@
+[
+  {
+    "id": "s1",
+    "playerId": "p1",
+    "date": "2025-02-10",
+    "duration": 60,
+    "type": "1-on-1 Training",
+    "coach": "Coach Marcus",
+    "location": "TOCA Center - Bay Area",
+    "drills": [
+      { "name": "First Touch", "reps": 120, "accuracy": 88 },
+      { "name": "Passing Combinations", "reps": 80, "accuracy": 92 },
+      { "name": "Shooting on Goal", "reps": 45, "accuracy": 71 }
+    ],
+    "stats": {
+      "totalBallTouches": 245,
+      "avgAccuracy": 84,
+      "topSpeed": 22.3
+    },
+    "notes": "Great improvement on first touch. Focus on weak foot finishing next session."
+  },
+  {
+    "id": "s2",
+    "playerId": "p1",
+    "date": "2025-01-28",
+    "duration": 45,
+    "type": "Skills Assessment",
+    "coach": "Coach Marcus",
+    "location": "TOCA Center - Bay Area",
+    "drills": [
+      { "name": "Dribbling Course", "reps": 10, "accuracy": 75 },
+      { "name": "Volleys", "reps": 60, "accuracy": 68 },
+      { "name": "Header Training", "reps": 30, "accuracy": 80 }
+    ],
+    "stats": {
+      "totalBallTouches": 100,
+      "avgAccuracy": 74,
+      "topSpeed": 19.8
+    },
+    "notes": "Volleys need work. Strong performance on headers."
+  },
+  {
+    "id": "s3",
+    "playerId": "p1",
+    "date": "2025-01-14",
+    "duration": 60,
+    "type": "1-on-1 Training",
+    "coach": "Coach Sarah",
+    "location": "TOCA Center - Bay Area",
+    "drills": [
+      { "name": "First Touch", "reps": 100, "accuracy": 82 },
+      { "name": "Passing Under Pressure", "reps": 90, "accuracy": 78 },
+      { "name": "Crossing & Finishing", "reps": 40, "accuracy": 65 }
+    ],
+    "stats": {
+      "totalBallTouches": 230,
+      "avgAccuracy": 75,
+      "topSpeed": 21.0
+    },
+    "notes": "Good energy throughout. Work on composure when receiving under pressure."
+  },
+  {
+    "id": "s4",
+    "playerId": "p1",
+    "date": "2024-12-19",
+    "duration": 90,
+    "type": "Group Session",
+    "coach": "Coach Marcus",
+    "location": "TOCA Center - Bay Area",
+    "drills": [
+      { "name": "Rondo (4v2)", "reps": 15, "accuracy": 87 },
+      { "name": "Small-Sided Game", "reps": 3, "accuracy": 90 },
+      { "name": "Set Pieces", "reps": 20, "accuracy": 70 }
+    ],
+    "stats": {
+      "totalBallTouches": 320,
+      "avgAccuracy": 82,
+      "topSpeed": 23.5
+    },
+    "notes": "Excellent session — best performance in group play so far."
+  },
+  {
+    "id": "s5",
+    "playerId": "p2",
+    "date": "2025-02-05",
+    "duration": 60,
+    "type": "1-on-1 Training",
+    "coach": "Coach Sarah",
+    "location": "TOCA Center - LA",
+    "drills": [
+      { "name": "Finishing", "reps": 80, "accuracy": 76 },
+      { "name": "1v1 Attacking", "reps": 20, "accuracy": 70 },
+      { "name": "Sprint & Shoot", "reps": 25, "accuracy": 80 }
+    ],
+    "stats": {
+      "totalBallTouches": 125,
+      "avgAccuracy": 75,
+      "topSpeed": 27.1
+    },
+    "notes": "Explosive pace. Finishing technique with left foot improving."
+  },
+  {
+    "id": "s6",
+    "playerId": "p2",
+    "date": "2025-01-20",
+    "duration": 45,
+    "type": "Skills Assessment",
+    "coach": "Coach Sarah",
+    "location": "TOCA Center - LA",
+    "drills": [
+      { "name": "Dribbling Course", "reps": 12, "accuracy": 83 },
+      { "name": "Shooting Accuracy", "reps": 50, "accuracy": 88 },
+      { "name": "Control & Turn", "reps": 60, "accuracy": 79 }
+    ],
+    "stats": {
+      "totalBallTouches": 122,
+      "avgAccuracy": 83,
+      "topSpeed": 26.5
+    },
+    "notes": "Shooting accuracy is a standout strength. Continue developing hold-up play."
+  },
+  {
+    "id": "s7",
+    "playerId": "p3",
+    "date": "2025-02-08",
+    "duration": 60,
+    "type": "1-on-1 Training",
+    "coach": "Coach Dani",
+    "location": "TOCA Center - Phoenix",
+    "drills": [
+      { "name": "Defensive Positioning", "reps": 30, "accuracy": 91 },
+      { "name": "Clearances", "reps": 40, "accuracy": 85 },
+      { "name": "Interceptions", "reps": 25, "accuracy": 88 }
+    ],
+    "stats": {
+      "totalBallTouches": 95,
+      "avgAccuracy": 88,
+      "topSpeed": 20.2
+    },
+    "notes": "Outstanding positional awareness. Work on distribution from the back."
+  }
+]

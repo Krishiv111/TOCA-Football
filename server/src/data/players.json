@@ -1,0 +1,35 @@
+[
+  {
+    "id": "p1",
+    "name": "Alex Rivera",
+    "email": "alex@example.com",
+    "position": "Midfielder",
+    "age": 17,
+    "teamName": "Eastside FC",
+    "joinedDate": "2023-01-15",
+    "totalSessions": 24,
+    "avatarInitials": "AR"
+  },
+  {
+    "id": "p2",
+    "name": "Jordan Smith",
+    "email": "jordan@example.com",
+    "position": "Forward",
+    "age": 16,
+    "teamName": "Northside United",
+    "joinedDate": "2022-09-01",
+    "totalSessions": 38,
+    "avatarInitials": "JS"
+  },
+  {
+    "id": "p3",
+    "name": "Casey Nguyen",
+    "email": "casey@example.com",
+    "position": "Defender",
+    "age": 18,
+    "teamName": "Westlake Academy",
+    "joinedDate": "2023-03-20",
+    "totalSessions": 15,
+    "avatarInitials": "CN"
+  }
+]

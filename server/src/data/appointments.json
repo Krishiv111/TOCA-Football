@@ -1,0 +1,57 @@
+[
+  {
+    "id": "a1",
+    "playerId": "p1",
+    "date": "2026-03-18",
+    "time": "10:00 AM",
+    "duration": 60,
+    "type": "1-on-1 Training",
+    "coach": "Coach Marcus",
+    "location": "TOCA Center - Bay Area",
+    "notes": "Focus: weak foot finishing and dribbling under pressure"
+  },
+  {
+    "id": "a2",
+    "playerId": "p1",
+    "date": "2026-03-25",
+    "time": "2:00 PM",
+    "duration": 90,
+    "type": "Group Session",
+    "coach": "Coach Marcus",
+    "location": "TOCA Center - Bay Area",
+    "notes": "Bring boots and water. Small-sided game format."
+  },
+  {
+    "id": "a3",
+    "playerId": "p2",
+    "date": "2026-03-15",
+    "time": "11:00 AM",
+    "duration": 60,
+    "type": "1-on-1 Training",
+    "coach": "Coach Sarah",
+    "location": "TOCA Center - LA",
+    "notes": "Focus: hold-up play and link-up with midfield"
+  },
+  {
+    "id": "a4",
+    "playerId": "p2",
+    "date": "2026-03-22",
+    "time": "9:00 AM",
+    "duration": 45,
+    "type": "Skills Assessment",
+    "coach": "Coach Sarah",
+    "location": "TOCA Center - LA",
+    "notes": "Quarterly assessment — all skill areas evaluated"
+  },
+  {
+    "id": "a5",
+    "playerId": "p3",
+    "date": "2026-03-17",
+    "time": "3:00 PM",
+    "duration": 60,
+    "type": "1-on-1 Training",
+    "coach": "Coach Dani",
+    "location": "TOCA Center - Phoenix",
+    "notes": "Focus: distribution from the back and long passing"
+  }
+]

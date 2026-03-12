@@ -1,18 +1,6 @@
-import Fastify from 'fastify'
-import cors from '@fastify/cors'
-import { playerRoutes } from './routes/players.js'
-import { sessionRoutes } from './routes/sessions.js'
+import { buildApp } from './app.js'
 
-const fastify = Fastify({ logger: true })
-
-await fastify.register(cors, {
-  origin: ['http://localhost:5173'],
-})
-
-await fastify.register(playerRoutes)
-await fastify.register(sessionRoutes)
-
-fastify.get('/health', async () => ({ status: 'ok' }))
+const fastify = await buildApp()
 
 try {
   await fastify.listen({ port: 3001, host: '0.0.0.0' })

@@ -1,13 +1,9 @@
 import { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
-import { getSession, type Session } from '@/lib/api'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Badge } from '@/components/ui/badge'
-import { Button } from '@/components/ui/button'
-import { Separator } from '@/components/ui/separator'
+import { getSession, getDurationMinutes, type TrainingSession } from '@/lib/api'
 
-function formatDate(dateStr: string) {
-  return new Date(dateStr).toLocaleDateString('en-US', {
+function formatDate(iso: string) {
+  return new Date(iso).toLocaleDateString('en-US', {
     weekday: 'long',
     month: 'long',
     day: 'numeric',
@@ -15,10 +11,54 @@ function formatDate(dateStr: string) {
   })
 }
 
+function formatTime(iso: string) {
+  return new Date(iso).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })
+}
+
+function ScoreRing({ score }: { score: number }) {
+  const r = 54
+  const circ = 2 * Math.PI * r
+  const offset = circ * (1 - score / 100)
+  const color = score >= 90 ? '#10b981' : score >= 75 ? '#3b82f6' : '#f59e0b'
+  const label = score >= 90 ? 'Excellent' : score >= 75 ? 'Good' : 'Keep Going'
+
+  return (
+    <div className="flex flex-col items-center gap-2">
+      <div className="relative w-36 h-36">
+        <svg viewBox="0 0 120 120" className="-rotate-90 w-36 h-36">
+          <circle cx="60" cy="60" r={r} fill="none" stroke="#f0f0f0" strokeWidth="10" />
+          <circle
+            cx="60" cy="60" r={r} fill="none"
+            stroke={color}
+            strokeWidth="10"
+            strokeDasharray={circ}
+            strokeDashoffset={offset}
+            strokeLinecap="round"
+            style={{ transition: 'stroke-dashoffset 1s ease' }}
+          />
+        </svg>
+        <div className="absolute inset-0 flex flex-col items-center justify-center">
+          <span className="text-3xl font-bold text-gray-900 tracking-tight">{score}</span>
+          <span className="text-xs text-gray-400 font-medium">score</span>
+        </div>
+      </div>
+      <span
+        className="text-xs font-semibold px-3 py-1 rounded-full"
+        style={{
+          background: score >= 90 ? '#d1fae5' : score >= 75 ? '#dbeafe' : '#fef3c7',
+          color,
+        }}
+      >
+        {label}
+      </span>
+    </div>
+  )
+}
+
 export function SessionDetail() {
   const { id } = useParams<{ id: string }>()
   const navigate = useNavigate()
-  const [session, setSession] = useState<Session | null>(null)
+  const [session, setSession] = useState<TrainingSession | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
@@ -32,8 +72,12 @@ export function SessionDetail() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center h-48 text-gray-500">
-        Loading session...
+      <div className="flex flex-col gap-4 animate-pulse">
+        <div className="h-6 w-24 bg-gray-200 rounded-xl" />
+        <div className="h-48 bg-gray-200 rounded-2xl" />
+        <div className="grid grid-cols-3 gap-3">
+          {[...Array(6)].map((_, i) => <div key={i} className="h-24 bg-gray-200 rounded-2xl" />)}
+        </div>
       </div>
     )
   }
@@ -42,100 +86,68 @@ export function SessionDetail() {
     return (
       <div className="flex flex-col items-center justify-center h-48 gap-4">
         <p className="text-red-500">{error ?? 'Session not found'}</p>
-        <Button variant="outline" onClick={() => navigate('/home')}>Back to Home</Button>
+        <button
+          onClick={() => navigate('/home')}
+          className="text-sm text-blue-600 hover:text-blue-700 font-medium"
+        >
+          ← Back to Home
+        </button>
       </div>
     )
   }
 
+  const duration = getDurationMinutes(session.startTime, session.endTime)
+
+  const metrics = [
+    { label: 'Balls Touched', value: session.numberOfBalls.toString(), icon: '⚽' },
+    { label: 'Goals Scored', value: session.numberOfGoals.toString(), icon: '🥅' },
+    { label: 'Best Streak', value: session.bestStreak.toString(), icon: '🔥' },
+    { label: 'Avg Speed', value: `${session.avgSpeedOfPlay}s`, icon: '⚡' },
+    { label: 'Exercises', value: session.numberOfExercises.toString(), icon: '🏋️' },
+    { label: 'Duration', value: `${duration} min`, icon: '⏱️' },
+  ]
+
   return (
     <div className="flex flex-col gap-6">
-      <div className="flex items-center gap-4">
-        <Button variant="ghost" size="sm" onClick={() => navigate('/home')} className="text-gray-500">
-          ← Back
-        </Button>
-      </div>
+      {/* Back */}
+      <button
+        onClick={() => navigate('/home')}
+        className="flex items-center gap-1.5 text-blue-600 hover:text-blue-700 text-sm font-medium transition-colors w-fit"
+      >
+        <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+        </svg>
+        Training History
+      </button>
 
       {/* Header card */}
-      <Card>
-        <CardHeader>
-          <div className="flex items-start justify-between gap-2 flex-wrap">
-            <div>
-              <CardTitle className="text-2xl">{session.type}</CardTitle>
-              <p className="text-gray-500 mt-1">{formatDate(session.date)}</p>
-            </div>
-            <Badge className="text-sm bg-blue-100 text-blue-700 border-blue-200">
-              {session.duration} min
-            </Badge>
+      <div className="bg-white rounded-3xl p-6 shadow-sm">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6">
+          <div>
+            <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1">Training Session</p>
+            <h1 className="text-2xl font-bold tracking-tight text-gray-900">{session.trainerName}</h1>
+            <p className="text-gray-500 text-[15px] mt-1">{formatDate(session.startTime)}</p>
+            <p className="text-gray-400 text-sm mt-0.5">
+              {formatTime(session.startTime)} – {formatTime(session.endTime)}
+            </p>
           </div>
-          <div className="flex flex-wrap gap-4 text-sm text-gray-600 mt-2">
-            <span>📍 {session.location}</span>
-            <span>👤 {session.coach}</span>
-          </div>
-        </CardHeader>
-      </Card>
-
-      {/* Stats */}
-      <div className="grid grid-cols-3 gap-4">
-        {[
-          { label: 'Ball Touches', value: session.stats.totalBallTouches.toString() },
-          { label: 'Avg Accuracy', value: `${session.stats.avgAccuracy}%` },
-          { label: 'Top Speed', value: `${session.stats.topSpeed} km/h` },
-        ].map(({ label, value }) => (
-          <Card key={label} className="text-center">
-            <CardContent className="py-4">
-              <p className="text-2xl font-bold text-blue-600">{value}</p>
-              <p className="text-xs text-gray-500 mt-1">{label}</p>
-            </CardContent>
-          </Card>
-        ))}
+          <ScoreRing score={session.score} />
+        </div>
       </div>
 
-      <Separator />
-
-      {/* Drills */}
-      <section>
-        <h3 className="text-lg font-semibold text-gray-900 mb-3">Drill Breakdown</h3>
-        <div className="flex flex-col gap-3">
-          {session.drills.map((drill) => (
-            <Card key={drill.name} className="border border-gray-200">
-              <CardContent className="py-4 flex items-center justify-between gap-4">
-                <div>
-                  <p className="font-medium text-gray-800">{drill.name}</p>
-                  <p className="text-sm text-gray-500">{drill.reps} reps</p>
-                </div>
-                <div className="flex items-center gap-3">
-                  <div className="text-right">
-                    <p className="text-lg font-bold text-blue-600">{drill.accuracy}%</p>
-                    <p className="text-xs text-gray-400">accuracy</p>
-                  </div>
-                  {/* Accuracy bar */}
-                  <div className="w-20 h-2 rounded-full bg-gray-200 overflow-hidden">
-                    <div
-                      className="h-full rounded-full bg-blue-500"
-                      style={{ width: `${drill.accuracy}%` }}
-                    />
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+      {/* Metrics grid */}
+      <div>
+        <h2 className="text-lg font-bold tracking-tight text-gray-900 mb-3">Session Stats</h2>
+        <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+          {metrics.map(({ label, value, icon }) => (
+            <div key={label} className="bg-white rounded-2xl p-4 shadow-sm">
+              <span className="text-xl">{icon}</span>
+              <p className="text-2xl font-bold text-gray-900 tracking-tight mt-2">{value}</p>
+              <p className="text-xs text-gray-400 font-medium mt-0.5">{label}</p>
+            </div>
           ))}
         </div>
-      </section>
-
-      {/* Coach notes */}
-      {session.notes && (
-        <>
-          <Separator />
-          <section>
-            <h3 className="text-lg font-semibold text-gray-900 mb-2">Coach Notes</h3>
-            <Card className="bg-yellow-50 border-yellow-200">
-              <CardContent className="py-4 text-sm text-gray-700 italic">
-                "{session.notes}"
-              </CardContent>
-            </Card>
-          </section>
-        </>
-      )}
+      </div>
     </div>
   )
 }

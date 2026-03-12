@@ -10,41 +10,26 @@ function loadJSON<T>(filename: string): T {
   return JSON.parse(readFileSync(join(dataDir, filename), 'utf-8'))
 }
 
-interface Drill {
-  name: string
-  reps: number
-  accuracy: number
-}
-
-interface SessionStats {
-  totalBallTouches: number
-  avgAccuracy: number
-  topSpeed: number
-}
-
-interface Session {
+interface TrainingSession {
   id: string
   playerId: string
-  date: string
-  duration: number
-  type: string
-  coach: string
-  location: string
-  drills: Drill[]
-  stats: SessionStats
-  notes: string
+  trainerName: string
+  startTime: string
+  endTime: string
+  numberOfBalls: number
+  bestStreak: number
+  numberOfGoals: number
+  score: number
+  avgSpeedOfPlay: number
+  numberOfExercises: number
 }
 
 interface Appointment {
   id: string
   playerId: string
-  date: string
-  time: string
-  duration: number
-  type: string
-  coach: string
-  location: string
-  notes: string
+  trainerName: string
+  startTime: string
+  endTime: string
 }
 
 interface Player {
@@ -53,11 +38,10 @@ interface Player {
 }
 
 export async function sessionRoutes(fastify: FastifyInstance) {
-  // GET /api/sessions/:id — single session detail
   fastify.get<{ Params: { id: string } }>(
     '/api/sessions/:id',
     async (request, reply) => {
-      const sessions = loadJSON<Session[]>('sessions.json')
+      const sessions = loadJSON<TrainingSession[]>('trainingSessions.json')
       const session = sessions.find((s) => s.id === request.params.id)
       if (!session) {
         return reply.status(404).send({ error: 'Session not found' })
@@ -66,40 +50,40 @@ export async function sessionRoutes(fastify: FastifyInstance) {
     }
   )
 
-  // GET /api/players/:email/sessions — past sessions for a player
   fastify.get<{ Params: { email: string } }>(
     '/api/players/:email/sessions',
     async (request, reply) => {
-      const players = loadJSON<Player[]>('players.json')
+      const players = loadJSON<Player[]>('profiles.json')
       const player = players.find(
         (p) => p.email.toLowerCase() === request.params.email.toLowerCase()
       )
       if (!player) {
         return reply.status(404).send({ error: 'Player not found' })
       }
-      const sessions = loadJSON<Session[]>('sessions.json')
+      const now = new Date().toISOString()
+      const sessions = loadJSON<TrainingSession[]>('trainingSessions.json')
       const playerSessions = sessions
-        .filter((s) => s.playerId === player.id)
-        .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+        .filter((s) => s.playerId === player.id && s.startTime <= now)
+        .sort((a, b) => new Date(b.startTime).getTime() - new Date(a.startTime).getTime())
       return playerSessions
     }
   )
 
-  // GET /api/players/:email/appointments — future appointments for a player
   fastify.get<{ Params: { email: string } }>(
     '/api/players/:email/appointments',
     async (request, reply) => {
-      const players = loadJSON<Player[]>('players.json')
+      const players = loadJSON<Player[]>('profiles.json')
       const player = players.find(
         (p) => p.email.toLowerCase() === request.params.email.toLowerCase()
       )
       if (!player) {
         return reply.status(404).send({ error: 'Player not found' })
       }
+      const now = new Date().toISOString()
       const appointments = loadJSON<Appointment[]>('appointments.json')
       const playerAppointments = appointments
-        .filter((a) => a.playerId === player.id)
-        .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
+        .filter((a) => a.playerId === player.id && a.startTime > now)
+        .sort((a, b) => new Date(a.startTime).getTime() - new Date(b.startTime).getTime())
       return playerAppointments
     }
   )

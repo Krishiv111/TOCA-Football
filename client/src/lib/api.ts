@@ -2,51 +2,36 @@ const BASE = '/api'
 
 export interface Player {
   id: string
-  name: string
   email: string
-  position: string
-  age: number
-  teamName: string
-  joinedDate: string
-  totalSessions: number
-  avatarInitials: string
+  firstName: string
+  lastName: string
+  phone: string
+  gender: string
+  dob: string
+  centerName: string
+  createdAt: string
 }
 
-export interface Drill {
-  name: string
-  reps: number
-  accuracy: number
-}
-
-export interface SessionStats {
-  totalBallTouches: number
-  avgAccuracy: number
-  topSpeed: number
-}
-
-export interface Session {
+export interface TrainingSession {
   id: string
   playerId: string
-  date: string
-  duration: number
-  type: string
-  coach: string
-  location: string
-  drills: Drill[]
-  stats: SessionStats
-  notes: string
+  trainerName: string
+  startTime: string
+  endTime: string
+  numberOfBalls: number
+  bestStreak: number
+  numberOfGoals: number
+  score: number
+  avgSpeedOfPlay: number
+  numberOfExercises: number
 }
 
 export interface Appointment {
   id: string
   playerId: string
-  date: string
-  time: string
-  duration: number
-  type: string
-  coach: string
-  location: string
-  notes: string
+  trainerName: string
+  startTime: string
+  endTime: string
 }
 
 async function fetchJSON<T>(url: string): Promise<T> {
@@ -62,10 +47,23 @@ export const getPlayer = (email: string) =>
   fetchJSON<Player>(`${BASE}/players/${encodeURIComponent(email)}`)
 
 export const getSessions = (email: string) =>
-  fetchJSON<Session[]>(`${BASE}/players/${encodeURIComponent(email)}/sessions`)
+  fetchJSON<TrainingSession[]>(`${BASE}/players/${encodeURIComponent(email)}/sessions`)
 
 export const getAppointments = (email: string) =>
   fetchJSON<Appointment[]>(`${BASE}/players/${encodeURIComponent(email)}/appointments`)
 
 export const getSession = (id: string) =>
-  fetchJSON<Session>(`${BASE}/sessions/${id}`)
+  fetchJSON<TrainingSession>(`${BASE}/sessions/${id}`)
+
+export function getDurationMinutes(start: string, end: string) {
+  return Math.round((new Date(end).getTime() - new Date(start).getTime()) / 60000)
+}
+
+export function getAge(dob: string) {
+  const today = new Date()
+  const birth = new Date(dob)
+  let age = today.getFullYear() - birth.getFullYear()
+  const m = today.getMonth() - birth.getMonth()
+  if (m < 0 || (m === 0 && today.getDate() < birth.getDate())) age--
+  return age
+}

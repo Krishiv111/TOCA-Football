@@ -12,21 +12,21 @@ function loadJSON<T>(filename: string): T {
 
 interface Player {
   id: string
-  name: string
   email: string
-  position: string
-  age: number
-  teamName: string
-  joinedDate: string
-  totalSessions: number
-  avatarInitials: string
+  firstName: string
+  lastName: string
+  phone: string
+  gender: string
+  dob: string
+  centerName: string
+  createdAt: string
 }
 
 export async function playerRoutes(fastify: FastifyInstance) {
   fastify.get<{ Params: { email: string } }>(
     '/api/players/:email',
     async (request, reply) => {
-      const players = loadJSON<Player[]>('players.json')
+      const players = loadJSON<Player[]>('profiles.json')
       const player = players.find(
         (p) => p.email.toLowerCase() === request.params.email.toLowerCase()
       )

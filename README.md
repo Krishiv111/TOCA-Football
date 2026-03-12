@@ -44,10 +44,13 @@ This runs both servers concurrently:
 
 | Server | URL |
 |---|---|
-| Frontend (Vite) | http://localhost:5173 |
+| **Frontend (Vite)** ← open this | **http://localhost:5173** |
 | Backend (Fastify) | http://localhost:3001 |
 
-Open http://localhost:5173 in your browser and sign in with one of the demo emails below.
+> **Note:** Always open the **frontend** at http://localhost:5173 — that's the app.
+> The backend is a JSON API and has no UI. Visiting http://localhost:3001 directly will return a 404, which is expected.
+
+Sign in with one of the demo emails below to get started.
 
 ---
 

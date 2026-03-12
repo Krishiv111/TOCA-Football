@@ -18,15 +18,36 @@ A full-stack web app where players log in with their email and instantly see the
 
 ## Running Locally
 
+### Prerequisites
+- Node.js 20.19+ or 22.12+
+- npm
+
+### 1. Clone the repo
+```bash
+git clone https://github.com/Krishiv111/TOCA-Football.git
+cd TOCA-Football
+```
+
+### 2. Install dependencies
 ```bash
 npm install
+```
+
+This installs packages for the root, `client/`, and `server/` workspaces in one go.
+
+### 3. Start the dev servers
+```bash
 npm run dev
 ```
 
-- Frontend → http://localhost:5173
-- Backend → http://localhost:3001
+This runs both servers concurrently:
 
-**Node.js 20.19+ or 22.12+ required.**
+| Server | URL |
+|---|---|
+| Frontend (Vite) | http://localhost:5173 |
+| Backend (Fastify) | http://localhost:3001 |
+
+Open http://localhost:5173 in your browser and sign in with one of the demo emails below.
 
 ---
 
